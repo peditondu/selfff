@@ -91,3 +91,15 @@ newgrp
 
 # Verifica che Docker funzioni
 docker run hello-world
+
+### Parte 2: Creiamo la Nostra Rete Privata con Tailscale 🛡️
+
+1.  **Installa Tailscale Ovunque:** Vai sul sito di Tailscale e installa l'app sul tuo **server** e su **tutti i dispositivi** da cui vorrai usare Stremio (telefono, PC, tablet, etc.).
+
+2.  **Accedi con lo Stesso Account:** È fondamentale usare lo stesso account di login su tutti i dispositivi.
+
+3.  **Abilita la MagicDNS ✨:** Vai alla [pagina DNS](https://login.tailscale.com/admin/dns) della tua console Tailscale e assicurati che queste due opzioni siano **abilitate**:
+    * MagicDNS
+    * HTTPS Certificates
+
+4.  **Trova il Nome del Tuo Server:** Nella [pagina Machines](https://login.tailscale.com/admin/machines), trova il tuo server e copia il suo nome macchina completo (es. `tuoserver.tailxxxx.ts.net`).
