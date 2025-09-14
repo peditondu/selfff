@@ -30,7 +30,7 @@ services:
     #networks:
       #- proxy
   mediaflow_proxy:
-    build: https://github.com/xlab992/easyale.git
+    build: https://github.com/nzo66/mediaflow-proxy.git
     container_name: mediaflow_proxy
     env_file:
       - ./mfp/.env
