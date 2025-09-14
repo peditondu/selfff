@@ -28,6 +28,7 @@ Basta chiacchiere, rimbocchiamoci le maniche!
 La creazione di questa guida non sarebbe stata possibile senza il lavoro e l'ispirazione di altri membri della community. Un ringraziamento particolare va a:
 * **[nihon77](https://github.com/nihon77):** Per aver creato la guida originale basata su DuckDNS e Port Forwarding. Il suo eccellente lavoro è stato la fonte di ispirazione e il punto di partenza fondamentale per sviluppare questa versione alternativa incentrata sulla sicurezza con Tailscale.
 * **[nzo66](https://github.com/nzo66):** Per il suo prezioso contributo nella creazione e manutenzione della versione modificata di MediaFlow Proxy. Questo componente è una parte cruciale dello stack per molti utenti italiani.
+* **[qwertyuiop8899](https://github.com/qwertyuiop8899):** Per aver creato l'addon Streamvix che estrae sorgenti streaming dai siti vixsrc e animeunity animesaturn daddy e vavoo per permetterti di guardare film, serie TV, anime e tv con la massima semplicità. Attualmente è uno degli addon più completi ed in costante aggioramento 
 
 ---
 
