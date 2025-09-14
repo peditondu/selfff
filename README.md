@@ -235,6 +235,7 @@ Useremo un Proxy Host per il servizio principale e degli Stream per gli altri.
 
 Configura il Proxy Host per Mammamia (porta 443 standard):
 
+```bash
 Vai su Hosts -> Proxy Hosts -> Add Proxy Host.
 
 Domain Names: nome-server.tua-tailnet.ts.net.
@@ -246,6 +247,7 @@ Forward Port: 8080.
 Scheda SSL: Seleziona "Certificato Tailscale" e attiva Force SSL.
 
 Salva.
+```
 
 Configura gli Stream per gli altri servizi:
 
