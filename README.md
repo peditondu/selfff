@@ -59,6 +59,12 @@ La creazione di questa guida non sarebbe stata possibile senza il lavoro e l'isp
 ### Parte 1: Installiamo le Basi (Docker & Git)
 Questi comandi sono per **Ubuntu/Debian**.
 
+#### 1.1: Installazione di Git 🔧
+```bash
+sudo apt update
+sudo apt install git -y
+```
+
 ### 1.2: Installazione di Docker e Docker Compose 🐳
 Installiamo la versione più recente e ufficiale.
 
@@ -91,6 +97,7 @@ newgrp
 
 # Verifica che Docker funzioni
 docker run hello-world
+```
 
 ### Parte 2: Creiamo la Nostra Rete Privata con Tailscale 🛡️
 
