@@ -102,6 +102,7 @@ docker run hello-world
 ### Parte 2: Creiamo la Nostra Rete Privata con Tailscale 🛡️
 
 Cosa è Tailscale? Tailscale è una rete virtuale privata (VPN) peer-to-peer che crea una connessione sicura e diretta tra i tuoi dispositivi, indipendentemente da dove si trovino. A differenza delle VPN tradizionali che utilizzano un server centrale, Tailscale crea una rete "mesh" decentralizzata basata sul protocollo WireGuard, rendendo la configurazione semplice, la comunicazione veloce e la gestione della rete priva di complessità. Ti permette di accedere in modo sicuro ai tuoi dispositivi e servizi da remoto, senza dover aprire porte sul router o configurare firewall. 
+Tailscale è gratuito fino a 20 dispositivi per un solo account e permette di fare 'mesh' fino a 3 account differenti.
 
 1.  ** Scarica e installa Tailscale:** Vai sul sito di Tailscale e installa l'app sul tuo **server** e su **tutti i dispositivi** da cui vorrai usare Stremio (telefono, PC, tablet, etc.).
 
