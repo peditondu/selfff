@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  npm:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      - "8081:80"     # HTTP
+      - "443:443"    # HTTPS
+      - "8181:81"     # NPM Admin UI
+      - "8001:8001"
+      - "8002:8002"
+      - "8003:8003"
+    environment:
+      DB_SQLITE_FILE: "/data/database.sqlite"
+    volumes:
+      - npm-data:/data
+      - npm-letsencrypt:/etc/letsencrypt
+    networks:
+      - proxy
+  #duckdns-updater:
+    #image: linuxserver/duckdns
+    #container_name: duckdns-updater
+    #restart: unless-stopped
+    #env_file:
+     # - ./duckdns-updater/.env
+    #volumes:
+     # - duckdns-data:/config
+    #networks:
+      #- proxy
+  mediaflow_proxy:
+    build: https://github.com/xlab992/easyale.git
+    container_name: mediaflow_proxy
+    env_file:
+      - ./mfp/.env
+    restart: unless-stopped
+    networks:
+      - proxy
+  mammamia:
+    build: ./mammamia
+    container_name: mammamia
+    env_file:
+      - ./mammamia/.env
+    restart: unless-stopped
+    networks:
+      - proxy
+  #stremio-docker:
+  #  image: tsaridas/stremio-docker:latest
+  #  container_name: stremio-docker
+  #  ports:
+  #    - "8080:8080"
+  #    - "11470:11470"
+  #  environment:
+  #    - NO_CORS=1
+  #    - CASTING_DISABLED=1
+  #  restart: unless-stopped
+  #  networks:
+  #    - proxy
+  streamv:
+    build: https://github.com/qwertyuiop8899/streamvix.git#main
+    container_name: streamv
+    env_file:
+      - ./streamv/.env
+    restart: unless-stopped
+    command: pnpm start
+    networks:
+      - proxy
+  aiostreams:
+    #build: https://github.com/Viren070/AIOStreams.git#main
+    image: ghcr.io/viren070/aiostreams:latest
+    container_name: aiostreams
+    env_file:
+      - ./aiostreams/.env
+    volumes:
+      - aiostreams-data:/app/data
+    restart: unless-stopped
+    networks:
+      - proxy
+
+volumes:
+  npm-data:
+  npm-letsencrypt:
+  duckdns-data:
+  aiostreams-data:
+
+networks:
+  proxy:
+    external: true
