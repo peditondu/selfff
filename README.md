@@ -1,2 +1,2 @@
 # selfhost
-Stremio stack with StreaVix, Mammamia, AIOtreams and MFP self-hosted
+Stremio stack with StreamVix, Mammamia, AIOtreams and MFP self-hosted
