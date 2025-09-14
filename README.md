@@ -1,11 +1,11 @@
 # Il Tuo Stremio Self-Hosted 🚀
 ### Sicuro con Docker 🐳, Privato con Tailscale 🛡️, Accessibile Ovunque 🌍
 
-Ciao a tutti, amici nerd! 👋
 
 Siete stanchi di configurazioni complicate e volete il pieno controllo del vostro streaming? Perfetto! Questa guida vi accompagnerà passo dopo passo nella creazione di un'istanza Stremio-addons privata, usando la magia di Docker e la sicurezza di Tailscale.
 
 L'obiettivo finale? Avere il vostro "Netflix" personale, accessibile in modo sicuro dal vostro telefono in 4G o dal PC di un amico, **senza mai esporre la vostra rete di casa su Internet**.
+Ricordate che per poter usufruire delle stream al di fuori della vostra rete locale, Tailscale deve essere sempre attivo sul vostro dispositivo altrimenti non funziona.
 
 Basta chiacchiere, rimbocchiamoci le maniche!
 
@@ -204,7 +204,7 @@ Puoi anche consultare i log in tempo reale con docker compose logs -f.
 
 #### 4.1: Accedi a NPM
 
-Vai su http://IP_DEL_TUO_SERVER:8181.
+Vai su http://IP_DEL_TUO_SERVER_TAILSCALE:8181.
 
 Email: admin@example.com
 
