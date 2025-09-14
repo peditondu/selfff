@@ -251,6 +251,7 @@ Salva.
 
 Configura gli Stream per gli altri servizi:
 
+```bash
 Vai su Hosts -> Streams -> Add Stream.
 
 Per AIOStreams:
@@ -276,6 +277,7 @@ Incoming Port: 8003
 Forward Hostname / IP: mfp
 
 Forward Port: 8888
+```
 
 ### Parte 5: La Configurazione Finale di Stremio 🎬
 
