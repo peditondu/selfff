@@ -110,3 +110,221 @@ docker run hello-world
     * HTTPS Certificates
 
 4.  **Trova il Nome del Tuo Server:** Nella [pagina Machines](https://login.tailscale.com/admin/machines), trova il tuo server e copia il suo nome macchina completo (es. `tuoserver.tailxxxx.ts.net`).
+
+Parte 3: Avvio del Progetto dal Repository GitHub 🚀
+
+Assicurati di avere Docker, Docker Compose e Git installati.
+
+### 📥 Clona il repository
+
+Fai il fork del repository selfhost e clonalo sul tuo server.
+
+```bash
+# Scegli un percorso, es. la tua home directory
+cd ~
+# Sostituisci <TUO-UTENTE>/<NOME-REPO> con i dati del tuo fork
+git clone [https://github.com/](https://github.com/)<TUO-UTENTE>/<NOME-REPO>.git
+cd <NOME-REPO>
+```
+
+### 🌐 Crea la rete Docker esterna proxy
+
+Questa rete permette a Nginx di comunicare con gli altri container.
+
+```bash
+docker network create proxy
+```
+
+Nota: Questo comando va eseguito una sola volta. Se la rete esiste già, Docker mostrerà un errore che puoi ignorare.
+
+### 🛠️ Creazione dei file .env
+
+Per ogni servizio, copia il file .env_example in un nuovo file .env e personalizzalo.
+
+#### 1. .env per MammaMia
+
+```bash
+# Esempio: ./mammamia/.env
+TMDB_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxx
+PROXY=["http://xxxxxxx-rotate:xxxxxxxxx@p.webshare.io:80"]
+FORWARDPROXY=http://xxxxxxx-rotate:xxxxxxxx@p.webshare.io:80/
+```
+
+#### 2. .env per MediaFlow Proxy
+
+```bash
+# Esempio: ./mfp/.env
+API_PASSWORD=password_a_scelta
+TRANSPORT_ROUTES={"all://*.ichigotv.net": {"verify_ssl": false}, "all://ichigotv.net": {"verify_ssl": false}}
+FORWARDED_ALLOW_IPS=*
+```
+
+#### 3. .env per StreamV
+
+```bash
+# Esempio: ./streamv/.env
+MFP_URL="link del tuo mfp" # Potrai modificarlo dopo con l'URL di Nginx
+MFP_PSW="la tua password di mfp"
+ENABLE_MPD=false
+ANIMEUNITY_ENABLED=true
+```
+
+#### 4. .env per AIOStreams
+
+```bash
+# Esempio: ./AIOStreams/.env
+# Queste sono le impostazioni minime
+ADDON_ID="il_tuo_id_addon"
+BASE_URL=" " # Lo modificherai dopo con l'URL di Nginx
+SECRET_KEY= # Generala con: openssl rand -hex 32
+ADDON_PASSWORD=password_a_scelta
+```
+
+### 🏗️ Build delle immagini e avvio dei container
+
+Questo comando costruirà le immagini e avvierà tutto in background.
+
+```Bash
+docker compose up -d --build
+```
+
+🧱 Il flag --build forza Docker a eseguire la build anche se l'immagine esiste già.
+
+🔍 Verifica che tutto sia partito
+
+```Bash
+docker compose ps
+```
+Puoi anche consultare i log in tempo reale con docker compose logs -f.
+
+### Parte 4: Il Vigile Urbano del Traffico (Nginx Proxy Manager) 🚦
+
+#### 4.1: Accedi a NPM
+
+Vai su http://IP_DEL_TUO_SERVER:8181.
+
+Email: admin@example.com
+
+Password: changeme (cambiala subito!)
+
+#### 4.2: Il Certificato Magico di Tailscale 📜
+
+Ottieni il certificato dal terminale del server (sostituisci il nome del server):
+
+```Bash
+tailscale cert nome-server.tua-tailnet.ts.net
+```
+Nota per macOS 🍏: Se il comando non stampa il certificato ma crea dei file, visualizzali con:
+
+```Bash
+cat "$HOME/Library/Containers/io.tailscale.ipn.macos/Data/nome-server.tua-tailnet.ts.net.key"
+cat "$HOME/Library/Containers/io.tailscale.ipn.macos/Data/nome-server.tua-tailnet.ts.net.crt"
+```
+
+#### Carica il certificato su NPM:
+
+In NPM, vai su SSL Certificates > Add SSL Certificate > scheda Custom.
+
+Crea due file temporanei sul tuo PC (privato.key e pubblico.crt), incolla il contenuto e caricali.
+
+Dai un nome facile da ricordare (es. "Certificato Tailscale") e salva.
+
+##### 4.3: Smistiamo il Traffico (Proxy & Stream Hosts)
+
+Useremo un Proxy Host per il servizio principale e degli Stream per gli altri.
+
+Configura il Proxy Host per Mammamia (porta 443 standard):
+
+Vai su Hosts -> Proxy Hosts -> Add Proxy Host.
+
+Domain Names: nome-server.tua-tailnet.ts.net.
+
+Forward Hostname / IP: mammamia.
+
+Forward Port: 8080.
+
+Scheda SSL: Seleziona "Certificato Tailscale" e attiva Force SSL.
+
+Salva.
+
+Configura gli Stream per gli altri servizi:
+
+Vai su Hosts -> Streams -> Add Stream.
+
+Per AIOStreams:
+
+Incoming Port: 8001
+
+Forward Hostname / IP: aiostreams
+
+Forward Port: 3000
+
+Per StreamV:
+
+Incoming Port: 8002
+
+Forward Hostname / IP: streamv
+
+Forward Port: 7860
+
+Per MediaFlow Proxy (mfp):
+
+Incoming Port: 8003
+
+Forward Hostname / IP: mfp
+
+Forward Port: 8888
+
+### Parte 5: La Configurazione Finale di Stremio 🎬
+
+Attiva Tailscale sul dispositivo da cui vuoi usare Stremio.
+
+Apri Stremio, vai su Addons (icona 🧩) > I Miei Addon e disinstalla le vecchie versioni.
+
+Reinstalla gli addon usando i nuovi indirizzi sicuri:
+
+https://nome-server.tua-tailnet.ts.net (per Mammamia)
+
+https://nome-server.tua-tailnet.ts.net:8001 (per AIOStreams)
+
+https://nome-server.tua-tailnet.ts.net:8002 (per StreamV)
+
+https://nome-server.tua-tailnet.ts.net:8003 (per MFP)
+
+### Parte 6: Mantenere la Barca a Galla (Aggiornamenti) 🔄
+
+Per aggiornare un servizio da GitHub (es. streamv):
+
+```Bash
+docker compose build --pull --no-cache streamv
+docker compose up -d
+```
+
+Per aggiornare un servizio da un'immagine Docker (es. aiostreams):
+
+```Bash
+docker compose pull aiostreams
+docker compose up -d
+```
+
+### SOS? Sezione Troubleshooting 🆘
+
+L'indirizzo .ts.net non funziona?
+
+Tailscale è attivo sul dispositivo che stai usando?
+
+MagicDNS è abilitato nella console di Tailscale?
+
+Vedo la vecchia grafica dopo un aggiornamento?
+
+Fai un hard-refresh del browser (su Mac: Cmd+Shift+R, su Windows: Ctrl+F5).
+
+Un container è in errore?
+
+Controlla i suoi log: docker compose logs nome_servizio.
+
+Utilizza servizi di IA come Google Gemini o ChatGPT per risolvere i problemi. Il trucco è copiare e incollare gli errori del terminale.
+
+Conclusione 🎉
+
+Congratulazioni! Hai appena costruito un media center personale, privato, sicuro e incredibilmente potente. Ora sei tu il padrone del tuo streaming.
