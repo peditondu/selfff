@@ -1,24 +1,23 @@
 #Use an official Python runtime as a parent image
-FROM python:3.10-slim-buster
-
-RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
-    sed -i 's/security.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
-    sed -i '/buster-updates/d' /etc/apt/sources.list
+FROM python:3.11-slim-bullseye
 
 # Set the working directory in the container to /app
 WORKDIR /app
 
 # Install git
-RUN apt-get update && apt-get install -y git
+RUN apt-get update && \
+    apt-get install -y tesseract-ocr libtesseract-dev git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Clone the repository
-RUN git clone --branch main https://github.com/xlab992/luca1 .
+RUN git clone --branch main https://github.com/UrloMythus/MammaMia .
 
-# Add Refreshed sites config by https://pastebin.com/raw/VrC4D65J (thanks!!!)
-# ADD https://raw.githubusercontent.com/nihon77/stremio-selfhosted/refs/heads/main/mammamia/config.json config.json
-# ADD https://raw.githubusercontent.com/nihon77/stremio-selfhosted/refs/heads/main/mammamia/update_domains.py update_domains.py
+ADD https://raw.githubusercontent.com/nihon77/stremio-selfhosted/refs/heads/main/mammamia/update_domains.py update_domains.py
+# ADD update_domains.py update_domains.py
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir pytesseract
 
 # Expose the port, for now default is 8080 cause it's the only one really allowed by HuggingFace
 EXPOSE 8080
